@@ -19,7 +19,7 @@ class Inotify extends EventEmitter
      * @var array
      */
     protected $watchDescriptors = array();
-    
+
     /**
      * @var LoopInterface
      */
@@ -60,17 +60,18 @@ class Inotify extends EventEmitter
     /**
      * Adds a path to the list of watched paths
      *
-     * @param string  $path      Path to the watched file or directory
-     * @param integer $mask      Bitmask of inotify constants
+     * @param string $path Path to the watched file or directory
+     * @param integer $mask Bitmask of inotify constants
      * @return integer unique watch identifier, can be used to remove() watch later
      */
     public function add($path, $mask)
     {
+        $path = rtrim($path, '/') . '/';
         if ($this->inotifyHandler === false) {
             // inotifyHandler not started yet => start a new one
             $this->inotifyHandler = \inotify_init();
             stream_set_blocking($this->inotifyHandler, 0);
-            
+
             // wait for any file events by reading from inotify handler asynchronously
             $this->loop->addReadStream($this->inotifyHandler, $this);
         }
@@ -78,18 +79,18 @@ class Inotify extends EventEmitter
         $this->watchDescriptors[$descriptor] = array('path' => $path);
         return $descriptor;
     }
-    
+
     /**
      * remove/cancel the given watch identifier previously aquired via add()
      * i.e. stop watching the associated path
-     * 
+     *
      * @param integer $descriptor watch identifier previously returned from add()
      */
     public function remove($descriptor)
     {
         if (isset($this->watchDescriptors[$descriptor])) {
             unset($this->watchDescriptors[$descriptor]);
-            
+
             if ($this->watchDescriptors) {
                 // there are still watch paths remaining => only remove this descriptor
                 \inotify_rm_watch($this->inotifyHandler, $descriptor);
@@ -107,9 +108,9 @@ class Inotify extends EventEmitter
     {
         if ($this->inotifyHandler !== false) {
             $this->loop->removeReadStream($this->inotifyHandler);
-            
+
             fclose($this->inotifyHandler);
-            
+
             $this->inotifyHandler = false;
             $this->watchDescriptors = array();
         }
