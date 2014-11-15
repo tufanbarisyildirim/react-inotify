@@ -20,6 +20,6 @@
         "php": ">=5.4.0",
         "ext-inotify": "*",
         "evenement/evenement": "2.0.*",
-        "react/event-loop": ">=0.2, <0.4"
+        "react/event-loop": ">=0.2"
     }
 }
