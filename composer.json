@@ -1,9 +1,13 @@
 {
-    "name": "mkraemer/react-inotify",
-    "description": "Inotify bindings for ReactPHP",
-    "keywords": ["inotify", "react"],
+    "name": "tufanbarisyildirim/react-inotify",
+    "description": "Inotify bindings for ReactPHP (forked from mkraemer/react-inotify)",
+    "keywords": ["inotify", "react","laravel"],
     "license": "MIT",
     "authors": [
+        {
+            "name": "Tufan Baris YILDIRIM",
+            "email": "tufanbarisyildirim@gmil.com"
+        },
         {
             "name": "Marius Krämer",
             "email": "marius@marius-kraemer.de"
